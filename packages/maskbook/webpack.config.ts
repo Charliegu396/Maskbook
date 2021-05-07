@@ -101,6 +101,9 @@ function config(opts: {
                 '@dimensiondev/icons': require.resolve('../icons/index.ts'),
                 '@dimensiondev/mask-plugin-infra': require.resolve('../plugin-infra/src/index.ts'),
                 '@dimensiondev/plugin-example': require.resolve('../plugins/example/src/index.ts'),
+                '@dimensiondev/external-plugin-previewer': require.resolve(
+                    '../external-plugin-previewer/src/index.tsx',
+                ),
             },
             // Polyfill those Node built-ins
             fallback: {
@@ -273,9 +276,11 @@ export default async function (cli_env: Record<string, boolean> = {}, argv: { mo
             'options-page': withBrowserPolyfill(...withReactDevTools(src('./src/extension/options-page/index.tsx'))),
             'dashboard-next': withBrowserPolyfill(...withReactDevTools(src('./src/extension/dashboard/index.tsx'))),
             'content-script': withBrowserPolyfill(...withReactDevTools(src('./src/content-script.ts'))),
+            // TODO: rename to browser_action
             popup: withBrowserPolyfill(...withReactDevTools(src('./src/extension/popup-page/index.tsx'))),
             'background-service': withBrowserPolyfill(src('./src/background-service.ts')),
             debug: withBrowserPolyfill(src('./src/extension/debug-page')),
+            popups: withBrowserPolyfill(src('./src/extension/popups/render.tsx')),
         }
         if (isManifestV3) delete main.entry['background-script']
         if (mode === 'production') delete main.entry['dashboard-next']
@@ -287,6 +292,7 @@ export default async function (cli_env: Record<string, boolean> = {}, argv: { mo
             getHTMLPlugin({ chunks: ['popup'], filename: 'popup.html' }),
             getHTMLPlugin({ chunks: ['content-script'], filename: 'generated__content__script.html' }),
             getHTMLPlugin({ chunks: ['debug'], filename: 'debug.html' }),
+            getHTMLPlugin({ chunks: ['popups'], filename: 'popups.html' }),
         ) // generate pages for each entry
         if (mode === 'development')
             main.plugins!.push(getHTMLPlugin({ chunks: ['dashboard-next'], filename: 'next.html' }))
