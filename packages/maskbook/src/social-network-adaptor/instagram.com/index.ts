@@ -1,4 +1,4 @@
-import { defineSocialNetworkUI, defineSocialNetworkWorker } from '../../social-network'
+import { defineSocialNetworkUI, defineSocialNetworkWorker } from '../../social-network/define'
 import { instagramBase, instagramWorkerBase } from './base'
 
 defineSocialNetworkUI({

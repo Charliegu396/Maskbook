@@ -18,10 +18,6 @@ export default function () {
     async function onCommittedListener(arg: Args): Promise<void> {
         if (arg.url === 'about:blank') return
         if (!arg.url.startsWith('http')) return
-        if (process.env.NODE_ENV === 'development') {
-            if (arg.url.includes('localhost')) return
-            if (arg.url.includes('127.0.0.1')) return
-        }
         const contains = await browser.permissions.contains({ origins: [arg.url] })
         if (!contains) return
         /**
