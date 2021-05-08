@@ -174,6 +174,7 @@ function config(opts: {
         ].filter(nonNullable),
         optimization: {
             minimize: false,
+            runtimeChunk: 'single',
             splitChunks: {
                 // Chrome bug https://bugs.chromium.org/p/chromium/issues/detail?id=1108199
                 automaticNameDelimiter: '-',
@@ -488,11 +489,11 @@ function getHTMLPlugin(options: HTMLPlugin.Options = {}) {
     })
 }
 // Cleanup old HMR files
-promises.readdir(path.join(__dirname, './dist')).then(
+promises.readdir(path.join(__dirname, '../../dist')).then(
     async (files) => {
         for (const file of files) {
             if (!file.includes('hot')) continue
-            await promises.unlink(path.join(__dirname, './dist/', file)).catch(() => {})
+            await promises.unlink(path.join(__dirname, '../../dist/', file)).catch(() => {})
         }
     },
     () => {},
